@@ -22,12 +22,30 @@ public_users.get("/", function (req, res) {
   res.send(JSON.stringify(books, null, 2));
 });
 
+const axios = require("axios");
+
+let get_books = async () => {
+  let response = await axios({
+    method: "get",
+    url: "https://ahmetulku98-5000.theiadocker-3-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/",
+    responseType: "json",
+  });
+};
+
 // Get book details based on ISBN
 public_users.get("/isbn/:isbn", function (req, res) {
   const isbn = parseInt(req.params.isbn);
   res.send(JSON.stringify(books[isbn]), null, 4);
   // res.send("ISBN Function");
 });
+
+let getBooksByISBN = async () => {
+  let response = await axios({
+    method: "get",
+    url: "https://ahmetulku98-5000.theiadocker-3-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/isbn/1",
+    responseType: "json",
+  });
+};
 
 // Get book details based on author
 public_users.get("/author/:author", function (req, res) {
@@ -43,6 +61,16 @@ public_users.get("/author/:author", function (req, res) {
   res.send(JSON.stringify(filtered_books, null, 4));
 });
 
+let getBooksByAuthor = async (author) => {
+  let response = await axios({
+    method: "get",
+    url:
+      "https://ahmetulku98-5000.theiadocker-3-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/author/" +
+      author,
+    responseType: "json",
+  });
+};
+
 // Get all books based on title
 public_users.get("/title/:title", function (req, res) {
   const title = req.params.title;
@@ -55,6 +83,16 @@ public_users.get("/title/:title", function (req, res) {
   let filtered_books = books_props.filter((book) => book.title === title);
   res.send(JSON.stringify(filtered_books, null, 4));
 });
+
+let getBooksByTitle = async (title) => {
+  let response = await axios({
+    method: "get",
+    url:
+      "https://ahmetulku98-5000.theiadocker-3-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/title/" +
+      title,
+    responseType: "json",
+  });
+};
 
 //  Get book review
 public_users.get("/review/:isbn", function (req, res) {
