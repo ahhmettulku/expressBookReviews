@@ -5,18 +5,16 @@ let users = require("./auth_users.js").users;
 const public_users = express.Router();
 
 public_users.post("/register", (req, res) => {
-  // const username = req.params.username;
-  // const password = req.params.password;
-  // if (isValid(username)) {
-  //     users.push({"username":username, "password":password})
-  //     res.send(`User with ${username} has been added`);
-  // }
-  // else if (!username) {
-  //     res.send(`No username paramete`);
-  // }
-  // else {
-  //     res.send(`User with ${username} is already exists`);
-  // }
+  const username = req.query.username;
+  const password = req.query.password;
+  if (isValid(username)) {
+    users.push({ username: username, password: password });
+    res.send(`User "${username}" has been added`);
+  } else if (username === undefined || password === undefined) {
+    res.send(`Please provide a valid username and password.`);
+  } else {
+    res.send(`User "${username}" is already exists`);
+  }
 });
 
 // Get the book list available in the shop
@@ -69,6 +67,15 @@ public_users.get("/review/:isbn", function (req, res) {
 
   let filtered_books = books_props.filter((book) => book === isbn);
   res.send(JSON.stringify(books_props[isbn].reviews, null, 4));
+});
+
+public_users.get("/users", (req, res) => {
+  return res.send(users);
+});
+
+public_users.get("/users/:password", (req, res) => {
+  const values = users.values;
+  return res.send(values);
 });
 
 module.exports.general = public_users;
